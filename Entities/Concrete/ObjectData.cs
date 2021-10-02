@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Entities.Abstract;
 
 namespace Entities.Concrete
 {
+    [Serializable]
     public class ObjectData:IData
     {
         public IData BaseData { get; set; }

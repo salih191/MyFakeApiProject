@@ -13,12 +13,13 @@ namespace Core.Extensions
 
         public static IEnumerable<T> PickRandom<T>(this IEnumerable<T> source, int count)
         {
-            while (count > source.Count() &&source.Any())
+            var enumerable = source as T[] ?? source.ToArray();
+            while (count > enumerable.Length && enumerable.Any())
             {
-                source = source.Concat(source);
+                source = enumerable.Concat(enumerable);
             }
 
-            return source.Shuffle().NewTake(count);
+            return enumerable.Shuffle().NewTake(count);
         }
 
         public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)

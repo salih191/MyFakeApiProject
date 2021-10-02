@@ -8,10 +8,13 @@ namespace Business.Abstract
 {
     public interface IDataService
     {
-        IDataResult<IData> ReadJson(JToken token);
+        IDataResult<IData> ReadJsonFromJToken(JToken token);
+        IDataResult<IData> ReadJsonFromString (string json);
         IDataResult<IData> ReadXml(XNode node);
-        IResult Fill();
-        IDataResult<object> GetData();
-        
+        IDataResult<object> GetData(IData data);
+        IResult SetCount(IData data,string key, int count);
+        IDataResult<byte[]> DataToBinary(IData data);
+        IDataResult<IData> BinaryToData(byte[] bytes);
+
     }
 }

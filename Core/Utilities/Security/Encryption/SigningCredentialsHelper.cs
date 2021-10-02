@@ -2,7 +2,7 @@
 
 namespace Core.Utilities.Security.Encryption
 {
-    public class SigningCredentialsHelper
+    public static class SigningCredentialsHelper
     {
         public static SigningCredentials CreateSigningCredentials(SecurityKey securityKey)
         {

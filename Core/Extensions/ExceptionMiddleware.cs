@@ -10,7 +10,7 @@ namespace Core.Extensions
 {
     public class ExceptionMiddleware
     {
-        private RequestDelegate _next;
+        private readonly RequestDelegate _next;
 
         public ExceptionMiddleware(RequestDelegate next)
         {
@@ -34,26 +34,23 @@ namespace Core.Extensions
             httpContext.Response.ContentType = "application/json";
             httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
-            string message = "Internal Server Error :" + e.Message;
-            IEnumerable<ValidationFailure> validationErrors;
-            if (e.GetType() == typeof(ValidationException))//hata tipi validasyon ise
-            {
-                message = e.Message;
-                validationErrors = ((ValidationException)e).Errors;
-                httpContext.Response.StatusCode = 400;
-                return httpContext.Response.WriteAsync(new ValidationErrorDetails
+            var message = "Internal Server Error :" + e.Message;
+            if (e.GetType() != typeof(ValidationException))
+                return httpContext.Response.WriteAsync(new ErrorDetails
                 {
                     StatusCode = httpContext.Response.StatusCode,
-                    Message = message,
-                    ValidationErrors = validationErrors
+                    Message = message
                 }.ToString());
-            }
-
-            return httpContext.Response.WriteAsync(new ErrorDetails
+            message = e.Message;
+            var validationErrors = ((ValidationException)e).Errors;
+            httpContext.Response.StatusCode = 400;
+            return httpContext.Response.WriteAsync(new ValidationErrorDetails
             {
                 StatusCode = httpContext.Response.StatusCode,
-                Message = message
+                Message = message,
+                ValidationErrors = validationErrors
             }.ToString());
+
         }
     }
 }

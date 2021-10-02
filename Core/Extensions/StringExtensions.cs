@@ -1,4 +1,6 @@
-﻿namespace Core.Extensions
+using System.Globalization;
+
+namespace Core.Extensions
 {
     public static class StringExtensions
     {
@@ -6,9 +8,7 @@
         {
             if (string.IsNullOrEmpty(str) || char.IsLower(str[0]))
                 return str;
-            if (str[0] == 'I')
-                return "i" + str.Substring(1);
-            return char.ToLower(str[0]) + str.Substring(1);
+            return char.ToLower(str[0],new CultureInfo("en-US", false)) + str[1..];
         }
     }
 }

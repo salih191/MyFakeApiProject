@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -16,7 +17,7 @@ namespace Core.Extensions
         {
             foreach (var property in user.GetType().GetProperties())
             {
-                claims.Add(new Claim(property.Name.FirstCharToLowerCase(), property.GetValue(user).ToString()));
+                claims.Add(new Claim(property.Name.FirstCharToLowerCase(), property.GetValue(user)?.ToString() ?? throw new InvalidOperationException()));
             }
         }
     }
